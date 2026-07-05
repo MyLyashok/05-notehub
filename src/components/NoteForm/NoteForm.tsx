@@ -8,8 +8,7 @@ interface NoteFormProps {
     onClose: () => void;
 }
 
-
-const TAG_OPTIONS = ['Todo', 'Work', 'Personal', 'Ideas'];
+const TAG_OPTIONS = ['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'];
 
 function NoteForm({ onClose }: NoteFormProps) {
     const queryClient = useQueryClient();
@@ -25,6 +24,8 @@ function NoteForm({ onClose }: NoteFormProps) {
     const validationSchema = Yup.object({
         title: Yup.string()
             .trim()
+            .min(3, 'Minimum 3 characters')
+            .max(50, 'Maximum 50 characters')
             .required('Title is required'),
         tag: Yup.string()
             .oneOf(TAG_OPTIONS, 'Invalid tag selection')
@@ -49,25 +50,22 @@ function NoteForm({ onClose }: NoteFormProps) {
             }}
         >
             <Form className={css.form}>
-
-                <div className={css.fieldGroup}>
-                    <label htmlFor="title" className={css.label}>Title</label>
+                <div className={css.formGroup}>
+                    <label htmlFor="title">Title</label>
                     <Field
                         id="title"
-                        name="title"
                         type="text"
+                        name="title"
                         className={css.input}
                         placeholder="Enter note title..."
                     />
-
                     <ErrorMessage name="title" component="span" className={css.error} />
                 </div>
 
-
-                <div className={css.fieldGroup}>
-                    <label htmlFor="tag" className={css.label}>Tag</label>
+                <div className={css.formGroup}>
+                    <label htmlFor="tag">Tag</label>
                     <Field id="tag" name="tag" as="select" className={css.select}>
-                        {TAG_OPTIONS.map(option => (
+                        {TAG_OPTIONS.map((option) => (
                             <option key={option} value={option}>
                                 {option}
                             </option>
@@ -76,12 +74,13 @@ function NoteForm({ onClose }: NoteFormProps) {
                     <ErrorMessage name="tag" component="span" className={css.error} />
                 </div>
 
-                <div className={css.fieldGroup}>
-                    <label htmlFor="content" className={css.label}>Content</label>
+                <div className={css.formGroup}>
+                    <label htmlFor="content">Content</label>
                     <Field
                         id="content"
                         name="content"
                         as="textarea"
+                        rows={8}
                         className={css.textarea}
                         placeholder="Enter note content (optional)..."
                     />
@@ -89,11 +88,15 @@ function NoteForm({ onClose }: NoteFormProps) {
                 </div>
 
                 <div className={css.actions}>
-                    <button type="button" className={css.cancelBtn} onClick={onClose}>
+                    <button type="button" className={css.cancelButton} onClick={onClose}>
                         Cancel
                     </button>
-                    <button type="submit" className={css.submitBtn} disabled={createMutation.isPending}>
-                        {createMutation.isPending ? 'Saving...' : 'Create note'}
+                    <button
+                        type="submit"
+                        className={css.submitButton}
+                        disabled={createMutation.isPending}
+                    >
+                        {createMutation.isPending ? 'Creating...' : 'Create note'}
                     </button>
                 </div>
             </Form>
