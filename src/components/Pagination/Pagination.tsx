@@ -16,9 +16,7 @@ interface PaginationProps {
 }
 
 function Pagination({ pageCount, currentPage, onPageChange }: PaginationProps) {
-    if (pageCount <= 1) {
-        return null;
-    }
+
 
     const handlePageClick = (selectedItem: { selected: number }) => {
         onPageChange(selectedItem.selected + 1);

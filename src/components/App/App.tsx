@@ -39,11 +39,14 @@ function App() {
       <header className={css.toolbar}>
         <SearchBox value={searchInputValue} onChange={handleSearchChange} />
 
-        <Pagination
-          pageCount={data?.totalPages || 0}
-          currentPage={page}
-          onPageChange={setPage}
-        />
+
+        {data && data.totalPages > 1 && (
+          <Pagination
+            pageCount={data.totalPages}
+            currentPage={page}
+            onPageChange={setPage}
+          />
+        )}
 
         <button type="button"
           className={css.button}
@@ -59,9 +62,12 @@ function App() {
 
         {data && <NoteList notes={data.notes} />}
       </main>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <NoteForm onClose={() => setIsModalOpen(false)} />
-      </Modal>
+
+      {isModalOpen && (
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <NoteForm onClose={() => setIsModalOpen(false)} />
+        </Modal>
+      )}
     </div>
   );
 
