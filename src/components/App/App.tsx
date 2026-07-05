@@ -34,9 +34,6 @@ function App() {
     placeholderData: keepPreviousData,
   });
 
-  const queryClient = useQueryClient();
-
-
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
